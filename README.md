@@ -6,14 +6,20 @@ Accepts HTTP GET or POST, with two parameters:
 * size: size of a square bounding box, in pixels
 Returns the resized image, or an image of the original size if size is less than the original size
 
-## Try it out locally
+## Try it out locally (see note below on dependencies)
 * Get a base64 encoded version of an image URL:
-  `echo -n "http://storage.googleapis.com/gcp-pcf-demo/Parliament_Big_Ben.jpg" | base64`
-* Use curl to access the service:
+  `echo -n "http://storage.googleapis.com/myBucketName/Image_Name.jpg" | base64`
+* Use curl to access the service, providing that base64 encoded URL value:
   `time curl http://localhost:18080/?size=800&urlBase64=aHR0cDovL3N0b3J...bi5qcGc= > output.jpg`
 
-## Install of dependencies
-[For Ubuntu 14.04](http://askubuntu.com/questions/507459/pil-install-in-ubuntu-14-04-1-lts)
-
 ## Run on Cloud Foundry
+* Edit ./manifest.yml to suit your application
+* `cf push`
 
+## Installation of dependencies, for running locally (Ubuntu 14.04)
+```
+sudo apt-get build-dep python-imaging
+sudo apt-get install libjpeg8 libjpeg62-dev libfreetype6 libfreetype6-dev
+sudo apt-get install python-pip
+sudo pip install Pillow
+```
