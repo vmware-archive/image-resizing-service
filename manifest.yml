@@ -1,0 +1,8 @@
+---
+applications:
+- name: image-resizing-service
+  memory: 128MB
+  disk_quota: 1G
+  buildpack: python_buildpack
+  command: python image_resizer.py
+  host: image-resizing-service
