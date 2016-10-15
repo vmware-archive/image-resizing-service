@@ -12,5 +12,8 @@ Returns the resized image, or an image of the original size if size is less than
 * Use curl to access the service:
   `time curl http://localhost:18080/?size=800&urlBase64=aHR0cDovL3N0b3J...bi5qcGc= > output.jpg`
 
+## Install of dependencies
+[For Ubuntu 14.04](http://askubuntu.com/questions/507459/pil-install-in-ubuntu-14-04-1-lts)
+
 ## Run on Cloud Foundry
 
