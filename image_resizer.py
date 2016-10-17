@@ -21,6 +21,9 @@ app = Flask(__name__)
 port = int(os.getenv("PORT", 18080))
 thumbSize = 256, 256
 
+def getInstanceNumber():
+    return str(os.getenv("CF_INSTANCE_INDEX", 0))
+
 def getFileExt(url):
     rv = None
     m = re.match('^.+\.([^.]+)$', url)
@@ -38,7 +41,7 @@ def getFileName(url):
 """
  Example: http://localhost:18080/?size=256&urlBase64=aHR0cDoL3...QmlcGc=
  If the requested size exceeds the size of the image, the original size is used
- 
+
  Ref. http://pillow.readthedocs.io/en/3.1.x/reference/Image.html
 """
 @app.route('/', methods = ['POST', 'GET'])
@@ -58,6 +61,33 @@ def thumb():
     img.save(img_io, 'JPEG', quality=70)
     img_io.seek(0)
     return send_file(img_io, mimetype='image/jpeg')
+
+@app.route('/resize', methods=['POST'])
+def resize():
+    if 'file' not in request.files:
+        return 'ERROR: no file present'
+    file = request.files['file']
+    size = request.form['size']
+    if size is None:
+        size = thumbSize
+    else:
+        print "Got size: %s" % size
+        size = int(size), int(size)
+    if file:
+        print "Got a file"
+        img = Image.open(file)
+        img.thumbnail(size)
+        img_io = StringIO.StringIO()
+        img.save(img_io, 'JPEG', quality=70)
+        img_io.seek(0)
+        return send_file(img_io, mimetype='image/jpeg')
+    else:
+        print "No file"
+        return 'Error: no image data present'
+
+@app.route('/test')
+def test():
+    return "OK"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port, threaded=True, debug=False)
