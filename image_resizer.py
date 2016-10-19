@@ -21,8 +21,8 @@ app = Flask(__name__)
 port = int(os.getenv("PORT", 18080))
 thumbSize = 256, 256
 
-def getInstanceNumber():
-    return str(os.getenv("CF_INSTANCE_INDEX", 0))
+def logMsg(args):
+    print "[Instance: %s] %s" % (str(os.getenv("CF_INSTANCE_INDEX", 0)), args)
 
 def getFileExt(url):
     rv = None
@@ -53,7 +53,7 @@ def thumb():
         size = int(size), int(size)
     urlBase64 = request.args.get('urlBase64')
     url = base64.b64decode(urlBase64)
-    print "Processing URL \"%s\" now ..." % url
+    logMsg("Processing URL \"%s\" now ..." % url)
     file = cStringIO.StringIO(urllib.urlopen(url).read())
     img = Image.open(file)
     img.thumbnail(size)
@@ -71,10 +71,10 @@ def resize():
     if size is None:
         size = thumbSize
     else:
-        print "Got size: %s" % size
+        logMsg("Got size: %s" % size)
         size = int(size), int(size)
     if file:
-        print "Got a file"
+        logMsg("Got a file")
         img = Image.open(file)
         img.thumbnail(size)
         img_io = StringIO.StringIO()
@@ -82,7 +82,7 @@ def resize():
         img_io.seek(0)
         return send_file(img_io, mimetype='image/jpeg')
     else:
-        print "No file"
+        logMsg("No file")
         return 'Error: no image data present'
 
 @app.route('/test')
