@@ -85,9 +85,9 @@ def resize():
         logMsg("No file")
         return 'Error: no image data present'
 
-@app.route('/test')
+@app.route('/status')
 def test():
-    return "OK"
+    return "STATUS_OK"
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=port, threaded=True, debug=False)
