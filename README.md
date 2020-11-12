@@ -1,3 +1,5 @@
+# image-resizing-service is no longer actively maintained by VMware.
+
 # A simple image resizing service
 
 ## How it works
